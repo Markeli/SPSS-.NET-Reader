@@ -79,7 +79,7 @@ namespace SpssLib.SpssDataset
         /// <summary>
         /// The labels for different values
         /// </summary>
-        public IDictionary<double, string> ValueLabels { get; set; }
+        public IDictionary<string, string> ValueLabels { get; set; }
         
         /// <summary>
         /// The 0-based index of the variable
@@ -93,7 +93,7 @@ namespace SpssLib.SpssDataset
         public Variable()
         {
             MissingValues = new double[3];
-            ValueLabels = new Dictionary<double, string>();
+            ValueLabels = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace SpssLib.SpssDataset
             }
             Name = name;
             MissingValues = new double[3];
-            ValueLabels = new Dictionary<double, string>();
+            ValueLabels = new Dictionary<string, string>();
         }
 
         /// <summary>

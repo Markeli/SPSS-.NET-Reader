@@ -137,7 +137,7 @@ namespace Test.SpssLib
             foreach (var variable in variables)
             {
                 Debug.WriteLine("{0} - {1}", variable.Name, variable.Label);
-                foreach (KeyValuePair<double, string> label in variable.ValueLabels)
+                foreach (KeyValuePair<string, string> label in variable.ValueLabels)
                 {
                     Debug.WriteLine(" {0} - {1}", label.Key, label.Value);
                 }

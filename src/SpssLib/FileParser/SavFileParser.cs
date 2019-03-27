@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using SpssLib.Compression;
+using SpssLib.DataReader;
 using SpssLib.FileParser.Records;
 using SpssLib.SpssDataset;
 
@@ -24,7 +25,7 @@ namespace SpssLib.FileParser
 
         public SavFileParser(Stream fileStream)
         {
-            Stream = fileStream;
+            Stream = fileStream ?? throw new ArgumentNullException(nameof(fileStream));
         }
 
         public void ParseMetaData()
@@ -406,7 +407,11 @@ namespace SpssLib.FileParser
             {
                 foreach (var label in valueLabelRecord.Labels)
                 {
-                    var key = BitConverter.ToDouble(label.Key, 0);
+                    
+                    var key = //variable.Type == DataType.Numeric
+//                        ? BitConverter.ToDouble(label.Key, 0).ToString()
+//                        : 
+                        MetaData.HeaderEncoding.GetString(label.Key); //BitConverter.ToString(label.Key, 0);
                     var value = label.Value.Replace("\0", string.Empty).Trim();
 
                     if (variable.ValueLabels.ContainsKey(key))

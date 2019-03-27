@@ -147,7 +147,10 @@ namespace SpssLib.FileParser
 				// Add ValueLabels if necesary
 				if (variable.ValueLabels != null && variable.ValueLabels.Any())
 				{
-					var valueLabel = new ValueLabel(variable.ValueLabels.ToDictionary(p => BitConverter.GetBytes(p.Key), p => p.Value));
+					var valueLabel = new ValueLabel(variable.ValueLabels.ToDictionary(
+						
+						p => _options.HeaderEncoding.GetBytes(p.Key),
+						p => p.Value));
 					valueLabel.VariableIndex.Add(dictionaryIndex);
 					valueLabels.Add(valueLabel);
 				}
