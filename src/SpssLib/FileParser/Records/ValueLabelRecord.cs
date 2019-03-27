@@ -47,7 +47,7 @@ namespace SpssLib.FileParser.Records
 		        var n = 8 - label.Key.Length;
 		        while (n-- > 0)
 		        {
-			        writer.Write('0');
+			        writer.Write((byte)0);
 		        }
 		        
                 // Write the lenght of the label

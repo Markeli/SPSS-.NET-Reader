@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Mime;
 using System.Text;
 using SpssLib.DataReader;
 using SpssLib.FileParser;
@@ -137,11 +138,24 @@ namespace Test.SpssLib
             foreach (var variable in variables)
             {
                 Debug.WriteLine("{0} - {1}", variable.Name, variable.Label);
-                foreach (KeyValuePair<string, string> label in variable.ValueLabels)
-                {
-                    Debug.WriteLine(" {0} - {1}", label.Key, label.Value);
-                }
 
+                if (variable is TextVariable textVariable)
+                {
+                    foreach (KeyValuePair<string, string> label in textVariable.ValueLabels)
+                    {
+                        Debug.WriteLine(" {0} - {1}", label.Key, label.Value);
+                    }
+
+                }
+                if (variable is NumericVariable numericVariable)
+                {
+                    foreach (KeyValuePair<double, string> label in numericVariable.ValueLabels)
+                    {
+                        Debug.WriteLine(" {0} - {1}", label.Key, label.Value);
+                    }
+
+                }
+                
                 Action<int, Variable> checkVariable;
                 if (variableValidators != null && variableValidators.TryGetValue(varCount, out checkVariable))
                 {

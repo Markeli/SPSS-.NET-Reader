@@ -371,15 +371,27 @@ namespace SpssLib.FileParser
             var variableRecord = metaData.VariableRecords[dictionaryIndex];
             var variableName = GetLongName(metaData, variableRecord);
 
-            var variable = new Variable(variableName)
-                           {
-                               Index = variableIndex,
-                               PrintFormat = variableRecord.PrintFormat,
-                               WriteFormat = variableRecord.WriteFormat,
-                               Type = variableRecord.Type == 0 ? DataType.Numeric : DataType.Text,
-                               MissingValueType = (MissingValueType) variableRecord.MissingValueType,
-                               Label = variableRecord.HasVariableLabel ? variableRecord.Label : null
-                           };
+            var variableType = variableRecord.Type == 0 ? DataType.Numeric : DataType.Text;
+
+            var variable = variableType == DataType.Numeric
+                ? new NumericVariable(variableName)
+                {
+                    Index = variableIndex,
+                    PrintFormat = variableRecord.PrintFormat,
+                    WriteFormat = variableRecord.WriteFormat,
+                    Type = variableType,
+                    MissingValueType = (MissingValueType) variableRecord.MissingValueType,
+                    Label = variableRecord.HasVariableLabel ? variableRecord.Label : null
+                } as Variable
+                : new TextVariable(variableName)
+                {
+                    Index = variableIndex,
+                    PrintFormat = variableRecord.PrintFormat,
+                    WriteFormat = variableRecord.WriteFormat,
+                    Type = variableType,
+                    MissingValueType = (MissingValueType) variableRecord.MissingValueType,
+                    Label = variableRecord.HasVariableLabel ? variableRecord.Label : null
+                };
 
             for (int i = 0; i < variableRecord.MissingValues.Count && i < variable.MissingValues.Length; i++)
             {
@@ -405,24 +417,43 @@ namespace SpssLib.FileParser
             var valueLabelRecord = metaData.ValueLabelRecords.FirstOrDefault(record => record.Variables.Contains(dictionaryIndex + 1));
             if (valueLabelRecord != null)
             {
-                foreach (var label in valueLabelRecord.Labels)
+                if (variable is NumericVariable numericVariable)
                 {
-                    
-                    var key = //variable.Type == DataType.Numeric
-//                        ? BitConverter.ToDouble(label.Key, 0).ToString()
-//                        : 
-                        MetaData.HeaderEncoding.GetString(label.Key); //BitConverter.ToString(label.Key, 0);
-                    var value = label.Value.Replace("\0", string.Empty).Trim();
-
-                    if (variable.ValueLabels.ContainsKey(key))
+                    foreach (var label in valueLabelRecord.Labels)
                     {
-                        var existingValue = variable.ValueLabels[key];
-                        throw new SpssFileFormatException(
-                            $"Variable {variableName} has a duplicate key for value label {key}, found values \"{existingValue}\" and \"{value}\"", dictionaryIndex);
-                    }
+                        var key = BitConverter.ToDouble(label.Key, 0);
 
-                    variable.ValueLabels.Add(key, value);
+                        var value = label.Value.Replace("\0", string.Empty).Trim();
+
+                        if (numericVariable.ValueLabels.ContainsKey(key))
+                        {
+                            var existingValue = numericVariable.ValueLabels[key];
+                            throw new SpssFileFormatException(
+                                $"Variable {variableName} has a duplicate key for value label {key}, found values \"{existingValue}\" and \"{value}\"", dictionaryIndex);
+                        }
+
+                        numericVariable.ValueLabels.Add(key, value);
+                    }
                 }
+                if (variable is TextVariable textVariable)
+                {
+                    foreach (var label in valueLabelRecord.Labels)
+                    {
+                    
+                        var key = MetaData.HeaderEncoding.GetString(label.Key);
+                        var value = label.Value.Replace("\0", string.Empty).Trim();
+
+                        if (textVariable.ValueLabels.ContainsKey(key))
+                        {
+                            var existingValue = textVariable.ValueLabels[key];
+                            throw new SpssFileFormatException(
+                                $"Variable {variableName} has a duplicate key for value label {key}, found values \"{existingValue}\" and \"{value}\"", dictionaryIndex);
+                        }
+
+                        textVariable.ValueLabels.Add(key, value);
+                    }
+                }
+               
             }
 
             // Get display info:

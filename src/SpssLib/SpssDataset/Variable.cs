@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace SpssLib.SpssDataset
 {
-    public class Variable
+    public abstract class Variable
     {
 		private static DateTime _epoc = new DateTime(1582, 10, 14, 0, 0, 0, DateTimeKind.Unspecified);
         private string _name;
@@ -76,10 +76,6 @@ namespace SpssLib.SpssDataset
         /// </summary>
         public double[] MissingValues { get; private set;}
         
-        /// <summary>
-        /// The labels for different values
-        /// </summary>
-        public IDictionary<string, string> ValueLabels { get; set; }
         
         /// <summary>
         /// The 0-based index of the variable
@@ -93,7 +89,6 @@ namespace SpssLib.SpssDataset
         public Variable()
         {
             MissingValues = new double[3];
-            ValueLabels = new Dictionary<string, string>();
         }
 
         /// <summary>
@@ -109,7 +104,6 @@ namespace SpssLib.SpssDataset
             }
             Name = name;
             MissingValues = new double[3];
-            ValueLabels = new Dictionary<string, string>();
         }
 
         /// <summary>

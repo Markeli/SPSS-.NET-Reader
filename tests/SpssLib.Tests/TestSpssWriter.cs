@@ -16,13 +16,13 @@ namespace Test.SpssLib
 
             var variables = new List<Variable>
                             {
-                                new Variable("avariablename_01")
+                                new NumericVariable("avariablename_01")
                                 {
                                     Label = "The variable Label",
-                                    ValueLabels = new Dictionary<string, string>
+                                    ValueLabels = new Dictionary<double, string>
                                                   {
-                                                      {"1", "Label for 1"},
-                                                      {"2", "Label for 2"},
+                                                      {1, "Label for 1"},
+                                                      {2, "Label for 2"},
                                                   },
                                     PrintFormat = new OutputFormat(FormatType.F, 8, 2),
                                     WriteFormat = new OutputFormat(FormatType.F, 8, 2),
@@ -30,13 +30,13 @@ namespace Test.SpssLib
                                     Width = 10,
                                     MissingValueType = MissingValueType.OneDiscreteMissingValue
                                 },
-                                new Variable("avariablename_02")
+                                new NumericVariable("avariablename_02")
                                 {
                                     Label = "Another variable",
-                                    ValueLabels = new Dictionary<string, string>
+                                    ValueLabels = new Dictionary<double, string>
                                                   {
-                                                      {"1", "this is 1"},
-                                                      {"2", "this is 2"},
+                                                      {1, "this is 1"},
+                                                      {2, "this is 2"},
                                                   },
                                     PrintFormat = new OutputFormat(FormatType.F, 8, 2),
                                     WriteFormat = new OutputFormat(FormatType.F, 8, 2),
@@ -79,7 +79,7 @@ namespace Test.SpssLib
         {
             var filename = @"testWriteString.sav";
 
-            var varString1 = new Variable("stringvar_01")
+            var varString1 = new TextVariable("stringvar_01")
                              {
                                  Label = "This is a string variable",
                                  Type = DataType.Text,
@@ -91,13 +91,13 @@ namespace Test.SpssLib
 //                                 },
                              };
 
-            var variable1 = new Variable("avariablename_01")
+            var variable1 = new NumericVariable("avariablename_01")
                             {
                                 Label = "The variable Label",
-                                ValueLabels = new Dictionary<string, string>
+                                ValueLabels = new Dictionary<double, string>
                                               {
-                                                  {"1", "Label for 1"},
-                                                  {"2", "Label for 2"},
+                                                  {1, "Label for 1"},
+                                                  {2, "Label for 2"},
                                               },
                                 PrintFormat = new OutputFormat(FormatType.F, 8, 2),
                                 WriteFormat = new OutputFormat(FormatType.F, 8, 2),
@@ -107,7 +107,7 @@ namespace Test.SpssLib
                                 MissingValues = {[0] = 999}
                             };
 
-            var varString = new Variable("stringvar_02")
+            var varString = new TextVariable("stringvar_02")
                             {
                                 Label = "This is a string variable",
                                 PrintFormat = new OutputFormat(FormatType.A, 60),
@@ -117,13 +117,13 @@ namespace Test.SpssLib
                                 TextWidth = 60,
                             };
 
-            var variable2 = new Variable("avariablename_02")
+            var variable2 = new NumericVariable("avariablename_02")
                             {
                                 Label = "Another variable",
-                                ValueLabels = new Dictionary<string, string>
+                                ValueLabels = new Dictionary<double, string>
                                               {
-                                                  {"1", "this is 1"},
-                                                  {"2", "this is 2"},
+                                                  {1, "this is 1"},
+                                                  {2, "this is 2"},
                                               },
                                 PrintFormat = new OutputFormat(FormatType.F, 8, 2),
                                 WriteFormat = new OutputFormat(FormatType.F, 8, 2),
@@ -199,20 +199,20 @@ namespace Test.SpssLib
         {
             var filename = @"testTestWriteLongWeirdString.sav";
 
-            var varString1 = new Variable("stringvar_01")
+            var varString1 = new TextVariable("stringvar_01")
             {
                 Label = "This is a string variable",
                 Type = DataType.Text,
                 TextWidth = 5000,
             };
 
-            var variable1 = new Variable("avariablename_01")
+            var variable1 = new NumericVariable("avariablename_01")
             {
                 Label = "The variable Label",
-                ValueLabels = new Dictionary<string, string>
+                ValueLabels = new Dictionary<double, string>
                 {
-                    {"1", "Label for 1"},
-                    {"2", "Label for 2"},
+                    {1, "Label for 1"},
+                    {2, "Label for 2"},
                 },
                 PrintFormat = new OutputFormat(FormatType.F, 8, 2),
                 WriteFormat = new OutputFormat(FormatType.F, 8, 2),
@@ -222,7 +222,7 @@ namespace Test.SpssLib
                 MissingValues = {[0] = 999}
             };
 
-            var varString = new Variable("stringvar_02")
+            var varString = new TextVariable("stringvar_02")
             {
                 Label = "This is a string variable",
                 Type = DataType.Text,
@@ -236,13 +236,13 @@ namespace Test.SpssLib
                 },
             };
 
-            var variable2 = new Variable("avariablename_02")
+            var variable2 = new NumericVariable("avariablename_02")
             {
                 Label = "Another variable",
-                ValueLabels = new Dictionary<string, string>
+                ValueLabels = new Dictionary<double, string>
                 {
-                    {"1", "this is 1"},
-                    {"2", "this is 2"},
+                    {1, "this is 1"},
+                    {2, "this is 2"},
                 },
                 PrintFormat = new OutputFormat(FormatType.F, 8, 2),
                 WriteFormat = new OutputFormat(FormatType.F, 8, 2),
@@ -315,7 +315,7 @@ namespace Test.SpssLib
 
                 var variables = new List<Variable>
                 {
-                    new Variable(null)
+                    new TextVariable(null)
                 };
                 
                 using (FileStream fileStream = new FileStream(filename, FileMode.Create, FileAccess.Write))
@@ -335,7 +335,7 @@ namespace Test.SpssLib
             var variables = new List<Variable>
             {
 #pragma warning disable 618
-                new Variable()
+                new TextVariable()
 #pragma warning restore 618
             };
 
@@ -357,7 +357,7 @@ namespace Test.SpssLib
 
             using (FileStream fileStream = new FileStream(filename, FileMode.Create, FileAccess.Write))
             {
-                var var1 = new Variable("stringvar_01")
+                var var1 = new TextVariable("stringvar_01")
                 {
                     Label = "This is a string variable",
                     Type = DataType.Text,
@@ -365,17 +365,7 @@ namespace Test.SpssLib
                     TextWidth = 5000
                 };
 
-                var var2 = new Variable("stringvar_02")
-                {
-                    Label = "This is a string variable",
-                    PrintFormat = new OutputFormat(FormatType.A, 60),
-                    WriteFormat = new OutputFormat(FormatType.A, 70),
-                    Type = DataType.Text,
-                    Width = 50,
-                    TextWidth = 5000
-                };
-
-                var var3 = new Variable("stringvar_03")
+                var var2 = new TextVariable("stringvar_02")
                 {
                     Label = "This is a string variable",
                     PrintFormat = new OutputFormat(FormatType.A, 60),
@@ -385,7 +375,17 @@ namespace Test.SpssLib
                     TextWidth = 5000
                 };
 
-                var var4 = new Variable("stringvar_04")
+                var var3 = new TextVariable("stringvar_03")
+                {
+                    Label = "This is a string variable",
+                    PrintFormat = new OutputFormat(FormatType.A, 60),
+                    WriteFormat = new OutputFormat(FormatType.A, 70),
+                    Type = DataType.Text,
+                    Width = 50,
+                    TextWidth = 5000
+                };
+
+                var var4 = new TextVariable("stringvar_04")
                 {
                     Label = "This is a string variable",
                     Type = DataType.Text,
@@ -393,7 +393,7 @@ namespace Test.SpssLib
                     TextWidth = 50
                 };
 
-                var var5 = new Variable("stringvar_05")
+                var var5 = new TextVariable("stringvar_05")
                 {
                     Label = "This is a string variable",
                     Type = DataType.Text,
@@ -401,7 +401,7 @@ namespace Test.SpssLib
                     TextWidth = 4
                 };
 
-                var var6 = new Variable("LIKES")
+                var var6 = new TextVariable("LIKES")
                 {
                     Label = "This is a string variable",
                     PrintFormat = new OutputFormat(FormatType.A, 255),

@@ -145,15 +145,32 @@ namespace SpssLib.FileParser
 
 				// TODO Avoid repeating the same valueLabels on the file
 				// Add ValueLabels if necesary
-				if (variable.ValueLabels != null && variable.ValueLabels.Any())
+				if (variable is NumericVariable numericVariable)
 				{
-					var valueLabel = new ValueLabel(variable.ValueLabels.ToDictionary(
+					if (numericVariable.ValueLabels != null && numericVariable.ValueLabels.Any())
+					{
+						var valueLabel = new ValueLabel(numericVariable.ValueLabels.ToDictionary(
 						
-						p => _options.HeaderEncoding.GetBytes(p.Key),
-						p => p.Value));
-					valueLabel.VariableIndex.Add(dictionaryIndex);
-					valueLabels.Add(valueLabel);
+							p => BitConverter.GetBytes(p.Key),
+							p => p.Value));
+						valueLabel.VariableIndex.Add(dictionaryIndex);
+						valueLabels.Add(valueLabel);
+					}
 				}
+				
+				if (variable is TextVariable textVariable)
+				{
+					if (textVariable.ValueLabels != null && textVariable.ValueLabels.Any())
+					{
+						var valueLabel = new ValueLabel(textVariable.ValueLabels.ToDictionary(
+						
+							p => _options.HeaderEncoding.GetBytes(p.Key),
+							p => p.Value));
+						valueLabel.VariableIndex.Add(dictionaryIndex);
+						valueLabels.Add(valueLabel);
+					}
+				}
+				
 			}
 		}
 
